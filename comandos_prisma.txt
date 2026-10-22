@@ -1,0 +1,19 @@
+npx prisma migrate dev --name nome_da_alteração
+
+npx prisma generate
+
+## usado para salvar a alteração feita no schema.prisma
+(nova tabela, coluna, etc.);
+
+
+npx prisma db pull
+npx prisma generate
+
+## Alguém mudou o banco direto (SQL, outra ferramenta)
+e quero trazer isso para o schema
+
+
+npx prisma db push
+
+## testar um schema, sem criar histórico de migration
+

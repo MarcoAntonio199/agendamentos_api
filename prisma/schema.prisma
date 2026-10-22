@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Usuario {
+  id String @id @default(uuid())
+  nome  String
+  sobrenome String
+  email String @unique
+  senha String
+  atendimentos Horarios[]
+
+
+}
+
+model Profissional{
+  id String @id @default(uuid())
+  nome String
+  sobrenome String
+  email String @unique
+  senha String
+  profissao String
+  atendimentos Horarios[]
+
+  // Controle do admin aprovar conta
+  aprovado Boolean @default(false)
+}
+
+enum StatusHorario {
+  DISPONIVEL
+  RESERVADO
+  CANCELADO // se faltar menos de 1 hora para a consulta acontecer e o usuario cancelar
+}
+
+model Horarios{
+  id String @id @default(uuid())
+  servico String
+  horario String
+  data DateTime
+  status StatusHorario @default(DISPONIVEL)
+
+  local String
+  lembreteEnviado Boolean @default(false)
+
+// configuração de Chave Estrangeira (FK)
+
+profissionalId String
+profissional Profissional @relation(fields: [profissionalId], references: [id])
+
+usuarioId String?
+usuario Usuario? @relation(fields: [usuarioId], references: [id])
+
+}
+
+// E-mails: resend ou nodemailer
+// Agedador de tarefas : node-cron ou Cron Jobs
