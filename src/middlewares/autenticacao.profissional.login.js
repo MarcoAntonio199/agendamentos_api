@@ -4,24 +4,26 @@
 
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
+import CustomError from '../utils/class_error.js'
 
 const SECRET = process.env.JWT_SECRET
 
-export function verifyJwtProfissional(req,res,next){
+export function verify_jwt_profissional(req,res,next){
     const authHeader = req.headers.authorization
 
     if(!authHeader){
-        return res.status(400).json({mensagem: 'Token não informado'})
+        throw new CustomError('Token não informado', 401)
     }
 
     const token = authHeader.split(' ')[1]
 
-    try {
-        const payload = jwt.verify(token, SECRET)
-        req.profissional = payload
-        next()
-    } catch (error) {
-        console.error(error)
-        return res.status(400).json({mensagem: 'Token inválido ou expirado'})
-    }
+    const payload = jwt.verify(token, SECRET)
+
+        if(!payload){
+            throw new CustomError('Token inválido ou expirado', 401)
+        }
+
+    req.profissional = payload
+    next()
+
 }

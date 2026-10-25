@@ -1,3 +1,5 @@
+// página de routes cadastro e login do schema: Usuario verificada
+
 import { Router } from "express";
 import { Controller_cadastro_usuario, Controller_login_usuario } from "./controller.usuario.js";
 
